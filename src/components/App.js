@@ -5,7 +5,9 @@ import { Component } from "react";
 
 export class App extends Component{
   state = {
-    images: []
+    images: [],
+    query: '',
+    page: 1,
   }
 
   componentDidMount(){
@@ -16,11 +18,18 @@ export class App extends Component{
 
   }
 
+  handleSubmit = (newQuery) => {
+        this.setState({
+        query: newQuery,
+        })
+    }
+
   render(){
+    const {images, page} = this.state;
     return (
       <div>
-        <Searchbar />
-        <ImageGallery/>
+        <Searchbar onSubmit={this.handleSubmit} />
+        <ImageGallery page={page} items={images}/>
         <Button/>
       </div>
     );
