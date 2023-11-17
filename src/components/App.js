@@ -2,6 +2,7 @@ import { Searchbar } from "./Searchbar";
 import { ImageGallery } from "./ImageGallery";
 import { Button } from "./Button";
 import { Component } from "react";
+import { fetchImages } from "./api";
 
 export class App extends Component{
   state = {
@@ -10,27 +11,54 @@ export class App extends Component{
     page: 1,
   }
 
-  componentDidMount(){
-
+  componentDidUpdate(prevProps, prevState){
+    if(
+      prevState.query !== this.state.query ||
+      prevState.page !== this.state.page
+    ){
+      this.fetchImageData();
+    }
   }
 
-  componentDidUpdate(){
+  fetchImageData = async () => {
+    const {query, page} = this.state;
+    try{
+      const imageData = await fetchImages(query, page);
+      if(page === 1){
+        this.setState({
+          images: imageData.hits,
+        })
+      } else{
+        this.setState(prevState => ({
+          images: [...prevState.images, ...imageData.hits],
+        }))
+      }
+    }
+    catch(error){
 
+    }
   }
 
   handleSubmit = (newQuery) => {
-        this.setState({
-        query: newQuery,
-        })
-    }
+    this.setState({
+      query: newQuery,
+      page: 1,
+    });
+  };
+
+  loadMore = () => {
+    this.setState(prevState => ({
+      page: prevState.page += 1,
+    }))
+  }
 
   render(){
-    const {images, page} = this.state;
+    const {images} = this.state;
     return (
-      <div>
+      <div className="App">
         <Searchbar onSubmit={this.handleSubmit} />
-        <ImageGallery page={page} items={images}/>
-        <Button/>
+        <ImageGallery items={images}/>
+        {images.length > 0 && <Button onClick={this.loadMore}/>}
       </div>
     );
   }
