@@ -25,11 +25,13 @@ export class ImageGalleryItem extends Component {
                 <li className="ImageGalleryItem" onClick={this.openModal}>
                     <img className="ImageGalleryItem-image" src={item.webformatURL} alt="img" />
                 </li>
-                <Modal 
-                isOpen={this.state.isModalOpen}
-                onClose={this.closeModal}
-                item={item}
-                />
+                {this.state.isModalOpen && (
+                    <Modal 
+                        isOpen={this.state.isModalOpen}
+                        onClose={this.closeModal}
+                        item={item}
+                    />
+                )}
             </div>
         )
     }
