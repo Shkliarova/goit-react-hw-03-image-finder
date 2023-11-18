@@ -3,12 +3,14 @@ import { ImageGallery } from "./ImageGallery";
 import { Button } from "./Button";
 import { Component } from "react";
 import { fetchImages } from "./api";
+import { Loader } from "./Loader";
 
 export class App extends Component{
   state = {
     images: [],
     query: '',
     page: 1,
+    isLoading: false,
   }
 
   componentDidUpdate(prevProps, prevState){
@@ -23,6 +25,7 @@ export class App extends Component{
   fetchImageData = async () => {
     const {query, page} = this.state;
     try{
+      this.setState({isLoading: true});
       const imageData = await fetchImages(query, page);
       if(page === 1){
         this.setState({
@@ -36,6 +39,9 @@ export class App extends Component{
     }
     catch(error){
 
+    }
+    finally{
+      this.setState({isLoading: false});
     }
   }
 
@@ -53,12 +59,13 @@ export class App extends Component{
   }
 
   render(){
-    const {images} = this.state;
+    const {images, isLoading} = this.state;
     return (
       <div className="App">
         <Searchbar onSubmit={this.handleSubmit} />
         <ImageGallery items={images}/>
-        {images.length > 0 && <Button onClick={this.loadMore}/>}
+        {images.length > 0 && !isLoading && <Button onClick={this.loadMore}/>}
+        {isLoading && <Loader/>}
       </div>
     );
   }
