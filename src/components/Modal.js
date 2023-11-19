@@ -23,7 +23,7 @@ export class Modal extends Component {
   
       return (
         <div className="Overlay" onClick={onClose}>
-          <ReactModal className="Modal" isOpen={isOpen} onRequestClose={onClose}>
+          <ReactModal className="Modal" isOpen={isOpen} onRequestClose={onClose} contentLabel="Modal">
             <img src={item.largeImageURL} alt="largeImage" />
           </ReactModal>
         </div>
