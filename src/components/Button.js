@@ -1,7 +1,5 @@
 export const Button = ({onClick}) => {
     return(
-        <div>
-            <button className="Button" onClick={onClick}>Load More</button>
-        </div>
+            <button type="button" className="Button" onClick={onClick}>Load More</button>
     )
 }
