@@ -4,7 +4,7 @@ import { Button } from "./Button";
 import { Component } from "react";
 import { fetchImages } from "./api";
 import { Loader } from "./Loader";
-import toast from "react-hot-toast";
+import toast, {Toaster} from "react-hot-toast";
 
 export class App extends Component{
   state = {
@@ -39,6 +39,7 @@ export class App extends Component{
         }))
       } else{
         toast.error('there are no more images')
+        
       }
     }
     catch(error){
@@ -70,6 +71,7 @@ export class App extends Component{
         <ImageGallery items={images}/>
         {images.length > 0 && !isLoading && <Button onClick={this.loadMore}/>}
         {isLoading && <Loader/>}
+        <Toaster/>
       </div>
     );
   }
